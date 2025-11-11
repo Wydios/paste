@@ -1,0 +1,44 @@
+@import "./variables.css";
+@import "./inputfields.css";
+@import "./footer.css";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    color: var(--color-background);
+    font-family: sans-serif;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+a {
+    color: var(--color-text);
+    font-weight: bold;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 0;
+    text-underline-offset: 2px;
+    transition: var(--animation-duration) ease-in-out;
+}
+
+a:hover {
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--color-text);
+}
+
+pre {
+    margin: 0 !important;
+    padding: 1em;
+    flex: 1;
+}
+
+.linenumber {
+    min-width: 3em !important;
+}

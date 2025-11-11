@@ -1,0 +1,30 @@
+footer {
+    padding: 20px 32px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 9px;
+    background-color: var(--color-background-light);
+
+    .about {
+        flex: 10;
+    }
+
+    .actions {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        
+        button {
+            border-radius: 6px;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: rgb(0, 0, 0, 0.1);
+        }
+    }
+}
