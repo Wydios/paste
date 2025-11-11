@@ -27,7 +27,7 @@ export function Footer({
         <footer>
             <div className="about">
                 <img src="/github.png" alt="GitHub Logo" width={13} height={13} style={{ marginRight: "5px" }} ></img>
-                <a href="https://github.com/wydios" target="_blank">
+                <a href="https://github.com/Wydios/paste" target="_blank">
                     GitHub
                 </a>
             </div>
@@ -44,4 +44,5 @@ export function Footer({
             </div>
         </footer>
     );
+
 };
