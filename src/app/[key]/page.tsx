@@ -6,9 +6,9 @@ import { Footer } from "../../utils/components/footer";
 export default async function paste({ params }: { params: Promise<{ key: string }> }) {
     const { key = "" } = await params;
 
-    const [pasteID, extension] = key.split(".");
+    const [pasteId, extension] = key.split(".");
 
-    const data = await utils.getPasteById(pasteID);
+    const data = await utils.getPasteById(pasteId);
     if (!data) {
         return redirect("/");
     };

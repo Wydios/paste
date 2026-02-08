@@ -24,10 +24,10 @@ class utils {
 
     public async removeOldPastes(): Promise<void> {
         const rows = await db.query("DELETE FROM pastes WHERE created_at < NOW() - INTERVAL 7 DAY");
-        const result = rows[0]?.affectedRows || 0;
 
-        if (result.length > 0) {
-            console.log(`Cleaned up ${result[0]?.affectedRows || 0} old pastes`);
+        const result = rows[0]?.affectedRows || 0;
+        if (result > 0) {
+            console.log(`Cleaned up ${result} old pastes`);
         }
     };
 };

@@ -15,7 +15,7 @@ export function Footer({
 }) {
     const router = useRouter();
 
-    const handleNew = () => {
+    const handleNew: () => void = () => {
         if (onNew) {
             onNew();
         } else {
@@ -44,5 +44,4 @@ export function Footer({
             </div>
         </footer>
     );
-
 };

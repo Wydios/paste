@@ -4,9 +4,9 @@ import utils from "../../../utils/utils";
 export default async function paste({ params }: { params: Promise<{ key: string }> }) {
     const { key = "" } = await params;
 
-    const [pasteID] = key.split(".");
+    const [pasteId] = key.split(".");
 
-    const data = await utils.getPasteById(pasteID);
+    const data = await utils.getPasteById(pasteId);
     if (!data) {
         return redirect("/");
     };
