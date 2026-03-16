@@ -1,0 +1,15 @@
+:root {
+    --color-background: #1f1f1f;
+    --color-background-light: #2c2c2c;
+
+    --color-text: #e0e0e0;
+    --color-text-dark: #b0b0b0;
+
+    --animation-duration: .2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --animation-duration: 1s;
+    }
+}
