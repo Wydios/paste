@@ -30,17 +30,6 @@ class utils {
             console.log(`Cleaned up ${result} old pastes`);
         }
     };
-
-    public gifs: Record<string, string> = {
-        wydiosCheer: "gif",
-        wydiosJam: "gif"
-    };
-
-    public replaceEmotes(text: string): string {
-        return text.replace(/\{([a-zA-Z0-9]+)\}/g, (match, name) => {
-            return `:${name}:`;
-        });
-    };
 };
 
 export default new utils();
