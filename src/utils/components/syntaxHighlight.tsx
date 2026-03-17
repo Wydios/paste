@@ -66,6 +66,11 @@ export function SyntaxHighlight({ content, extension }: { content: string, exten
                 const img = document.createElement("img");
                 img.src = `/emotes/${name}.png`;
                 img.className = "emote";
+
+                img.onerror = () => {
+                    img.replaceWith(document.createTextNode(`{${name}}`));
+                }
+
                 parent.insertBefore(img, node);
 
                 lastIndex = start + match[0].length;
