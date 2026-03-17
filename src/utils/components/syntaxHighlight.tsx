@@ -46,7 +46,7 @@ export function SyntaxHighlight({ content, extension }: { content: string, exten
             const text = node.nodeValue;
             if (!text) return;
 
-            const matches = [...text.matchAll(/\{(wydios[a-zA-Z0-9]*)\}/g)];
+            const matches = [...text.matchAll(/\{(wydios[a-zA-Z0-9]+)\}/g)];
             if (!matches.length) return;
 
             const parent = node.parentNode;
@@ -56,6 +56,8 @@ export function SyntaxHighlight({ content, extension }: { content: string, exten
 
             matches.forEach(match => {
                 const name = match[1];
+                if (!name.startsWith("wydios")) return;
+
                 const start = match.index ?? 0;
 
                 const before = text.slice(lastIndex, start);
