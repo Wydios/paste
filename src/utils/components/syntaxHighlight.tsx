@@ -70,7 +70,7 @@ export function SyntaxHighlight({ content, extension }: { content: string, exten
         }
 
         (async () => {
-            for (const node of nodes) {    
+            for (const node of nodes) {
                 const text = node.nodeValue;
                 if (!text) continue;
 
@@ -94,7 +94,6 @@ export function SyntaxHighlight({ content, extension }: { content: string, exten
                     }
 
                     const src = `/emotes/${name}.png`;
-
                     const exists = await checkImage(src);
 
                     if (!parent.contains(node)) break;
@@ -103,13 +102,12 @@ export function SyntaxHighlight({ content, extension }: { content: string, exten
                         const img = document.createElement("img");
                         img.src = src;
                         img.className = "emote";
-
                         img.style.display = "inline-block";
 
                         parent.insertBefore(img, node);
                     } else {
                         parent.insertBefore(
-                            document.createTextNode(`{${name}}`),
+                            document.createTextNode(match[0]),
                             node
                         );
                     }
@@ -117,15 +115,15 @@ export function SyntaxHighlight({ content, extension }: { content: string, exten
                     lastIndex = start + match[0].length;
                 }
 
-            if (!parent.contains(node)) continue;
+                if (!parent.contains(node)) continue;
 
-            const after = text.slice(lastIndex);
-            if (after) {
-                parent.insertBefore(document.createTextNode(after), node);
+                const after = text.slice(lastIndex);
+                if (after) {
+                    parent.insertBefore(document.createTextNode(after), node);
+                }
+
+                parent.removeChild(node);
             }
-
-            parent.removeChild(node);
-        }
         })();
     }, [content]);
 
