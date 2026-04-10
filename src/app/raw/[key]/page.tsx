@@ -11,5 +11,10 @@ export default async function paste({ params }: { params: Promise<{ key: string 
         return redirect("/");
     };
 
-    return <pre style={{ backgroundColor: "#1f1f1f", color: "#ffffffff", padding: "1em" }}>{data.content}</pre>
+    return <pre style={{ 
+        minHeight: "100vh",
+        backgroundColor: "#1f1f1f", 
+        color: "#ffffffff", 
+        padding: "1em" 
+    }}>{data.content}</pre>
 };

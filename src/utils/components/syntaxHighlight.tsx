@@ -29,26 +29,20 @@ const extensionMap: Record<string, string> = {
 
 const emoteCache = new Map<string, boolean>();
 
-function checkImage(src: string): Promise<boolean> {
+async function checkImage(src: string): Promise<boolean> {
     if (emoteCache.has(src)) {
-        return Promise.resolve(emoteCache.get(src)!);
+        return emoteCache.get(src)!;
     };
 
-    return new Promise((resolve) => {
-        const img = new Image();
-
-        img.onload = () => {
-            emoteCache.set(src, true);
-            resolve(true);
-        };
-
-        img.onerror = () => {
-            emoteCache.set(src, false);
-            resolve(false);
-        };
-
-        img.src = src;
-    });
+    try {
+        const res = await fetch(src, { method: "HEAD" });
+        const ok = res.ok;
+        emoteCache.set(src, ok);
+        return ok;
+    } catch {
+        emoteCache.set(src, false);
+        return false;
+    }
 };
 
 export function SyntaxHighlight({ content, extension }: { content: string, extension: string }) {
@@ -74,55 +68,58 @@ export function SyntaxHighlight({ content, extension }: { content: string, exten
                 const text = node.nodeValue;
                 if (!text) continue;
 
-                const matches = [...text.matchAll(/\{(wydios[a-zA-Z0-9]+)\}/g)];
+                const matches = [...text.matchAll(/\{([a-zA-Z0-9]+)\}/g)];
                 if (!matches.length) continue;
 
                 const parent = node.parentNode;
                 if (!parent) continue;
 
                 let lastIndex = 0;
+                const fragment = document.createDocumentFragment();
 
                 for (const match of matches) {
-                    if (!parent.contains(node)) break;
-
                     const name = match[1];
                     const start = match.index ?? 0;
 
-                    const before = text.slice(lastIndex, start);
-                    if (before && parent.contains(node)) {
-                        parent.insertBefore(document.createTextNode(before), node);
+                    if (start > lastIndex) {
+                        fragment.appendChild(
+                            document.createTextNode(text.slice(lastIndex, start))
+                        );
                     }
 
-                    const src = `/emotes/${name}.png`;
-                    const exists = await checkImage(src);
+                    if (name.startsWith("wydios")) {
+                        const src = `${window.location.origin}/emotes/${name}.png`;
+                        const exists = await checkImage(src);
 
-                    if (!parent.contains(node)) break;
-
-                    if (exists) {
-                        const img = document.createElement("img");
-                        img.src = src;
-                        img.className = "emote";
-                        img.style.display = "inline-block";
-
-                        parent.insertBefore(img, node);
+                        if (exists) {
+                            const img = document.createElement("img");
+                            img.src = src;
+                            img.className = "emote";
+                            img.style.display = "inline-block";
+                            fragment.appendChild(img);
+                        } else {
+                            fragment.appendChild(
+                                document.createTextNode(match[0])
+                            );
+                        }
                     } else {
-                        parent.insertBefore(
-                            document.createTextNode(match[0]),
-                            node
+                        fragment.appendChild(
+                            document.createTextNode(match[0])
                         );
                     }
 
                     lastIndex = start + match[0].length;
                 }
 
-                if (!parent.contains(node)) continue;
-
-                const after = text.slice(lastIndex);
-                if (after) {
-                    parent.insertBefore(document.createTextNode(after), node);
+                if (lastIndex < text.length) {
+                    fragment.appendChild(
+                        document.createTextNode(text.slice(lastIndex))
+                    );
                 }
 
-                parent.removeChild(node);
+                if (parent.contains(node)) {
+                    parent.replaceChild(fragment, node);
+                }
             }
         })();
     }, [content]);
@@ -136,8 +133,8 @@ export function SyntaxHighlight({ content, extension }: { content: string, exten
                 wrapLines
                 wrapLongLines
             >
-            {content}
+                {content}
             </SyntaxHighlighter>
-      </div>
+        </div>
     );
 };
